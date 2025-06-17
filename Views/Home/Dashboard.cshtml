@@ -1,0 +1,92 @@
+﻿@model CalendareGit.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>User Profile</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <img src="https://via.placeholder.com/150" class="rounded-circle" alt="Profile Image">
+                    </div>
+                    <table class="table table-borderless">
+                        <tr>
+                            <th>User ID:</th>
+                            <td>@Model.UserId</td>
+                        </tr>
+                        <tr>
+                            <th>Username:</th>
+                            <td>@Model.Username</td>
+                        </tr>
+                        <tr>
+                            <th>Role:</th>
+                            <td>
+                                <span class="badge @(Model.Role == "Admin" ? "bg-danger" : "bg-success")">
+                                    @Model.Role
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Last Login:</th>
+                            <td>@(Model.LastLogin?.ToString("g") ?? "First login")</td>
+                        </tr>
+                        <tr>
+                            <th>Account Created:</th>
+                            <td>@Model.AccountCreated.ToString("g")</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4>Welcome to Your Dashboard</h4>
+                </div>
+                <div class="card-body">
+                    <p>Hello, @Model.Username! You are logged in as @Model.Role.</p>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="alert alert-warning">
+                            <h5>Admin Privileges</h5>
+                            <p>You have access to administrative functions.</p>
+                            <a asp-action="AdminPanel" class="btn btn-warning">Go to Admin Panel</a>
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <h5>Quick Actions</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="#" class="btn btn-outline-primary">View Profile</a>
+                            <a href="#" class="btn btn-outline-secondary">Settings</a>
+                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                <button type="submit" class="btn btn-outline-danger">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Recent Activity</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">Logged in successfully</li>
+                        <li class="list-group-item">Profile updated</li>
+                        <li class="list-group-item">New notification received</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+﻿@* @page
+@using Microsoft.AspNetCore.Authorization
+@model RoleBasedInfoModel
+@inject Microsoft.AspNetCore.Identity.UserManager<IdentityUser> UserManager
+@inject NavigationManager Navigation
+
+@code {
+    protected override void OnInitialized()
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+        var userName = query["userName"];
+        var role = query["role"];
+        // используйте полученные данные
+    }
+}
+
+<h2>Информация для пользователя</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Добро пожаловать, @User.Identity.Name!</p>
+    @if (isAdmin)
+    {
+        <h3>Доступные действия для Администратора</h3>
+        <ul>
+            <li>Управление пользователями</li>
+            <li>Просмотр всех заказов</li>
+            <li>Настройки системы</li>
+        </ul>
+    }
+    else if (isUser)
+    {
+        <h3>Доступные действия для Пользователя</h3>
+        <ul>
+            <li>Просмотр своих заказов</li>
+            <li>Редактирование профиля</li>
+        </ul>
+    }
+    else
+    {
+        <p>У вас нет специальных ролей.</p>
+    }
+}
+else
+{
+    <p>Пожалуйста, войдите в систему, чтобы просмотреть информацию.</p>
+}
+ *@
